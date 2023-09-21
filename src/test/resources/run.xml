@@ -1,0 +1,9 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="Regression Test" verbose="1">
+    <test name="Login Test CRM">
+        <classes>
+            <class name="BTVN123.btvn123" />
+        </classes>
+    </test>
+</suite>
