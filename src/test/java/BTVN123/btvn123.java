@@ -27,6 +27,10 @@ public class btvn123 {
         driver.findElement(By.xpath("//input[@id='email']")).sendKeys("admin@example.com");
         driver.findElement(By.xpath("//input[@id='password']")).sendKeys("123456");
         driver.findElement(By.xpath("//button[normalize-space()='Login']")).click();
+        //Mở category
+        driver.findElement(By.xpath("//span[normalize-space()='Products']")).click();
+        driver.findElement(By.xpath("//span[normalize-space()='Category']")).click();
+        Assert.assertEquals(driver.findElement(By.xpath("//h1[@class='h3']")).getText(),"All categories");
     }
 
     @AfterMethod
@@ -37,10 +41,6 @@ public class btvn123 {
 
     @Test(priority = 0)
     public void Add_new_Category() throws InterruptedException {
-        //Mở Category
-        driver.findElement(By.xpath("//span[normalize-space()='Products']")).click();
-        driver.findElement(By.xpath("//span[normalize-space()='Category']")).click();
-        Assert.assertEquals(driver.findElement(By.xpath("//h1[@class='h3']")).getText(),"All categories");
         //Add new Category
         driver.findElement(By.xpath("//span[normalize-space()='Add New category']")).click();
         //Input name
@@ -64,6 +64,7 @@ public class btvn123 {
         driver.findElement(By.xpath("//input[@placeholder='Search your files']")).sendKeys("@");
         driver.findElement(By.xpath("//div[@class='aiz-file-box-wrap']")).click();
         driver.findElement(By.xpath("//button[normalize-space()='Add Files']")).click();
+        Thread.sleep(500);
         //Meta title
         driver.findElement(By.xpath("//input[@placeholder='Meta Title']")).sendKeys("Viettel Automation");
         //Filtering
@@ -72,24 +73,34 @@ public class btvn123 {
         driver.findElement(By.xpath("(//div[@class='form-group mb-0 text-right'])[1]")).click();
         //Save
         driver.findElement(By.xpath("//button[@type='submit']")).click();
+        //Verify Message
+        Assert.assertEquals(driver.findElement(By.xpath("//span[@data-notify='message']")).getText(),"Category has been inserted successfully");
     }
     @Test(priority = 1)
     public void Find_added_category() throws InterruptedException {
-        //Mở category
-        driver.findElement(By.xpath("//span[normalize-space()='Products']")).click();
-        driver.findElement(By.xpath("//span[normalize-space()='Category']")).click();
-        Assert.assertEquals(driver.findElement(By.xpath("//h1[@class='h3']")).getText(),"All categories");
         //Search Category
         driver.findElement(By.xpath("//input[@id='search']")).sendKeys("Hungnt" + Keys.ENTER);
+        //Verify added category
+        Assert.assertTrue(driver.findElement(By.xpath("//td[normalize-space()='Hungnt-Viettel']")).isDisplayed());
     }
     @Test(priority = 2)
-    public void Delete_category() throws InterruptedException {
-        //Mở category
-        driver.findElement(By.xpath("//span[normalize-space()='Products']")).click();
-        driver.findElement(By.xpath("//span[normalize-space()='Category']")).click();
-        Assert.assertEquals(driver.findElement(By.xpath("//h1[@class='h3']")).getText(),"All categories");
+    public void Edit_added_category() throws InterruptedException {
         //Search Category
         driver.findElement(By.xpath("//input[@id='search']")).sendKeys("Hungnt" + Keys.ENTER);
+        Thread.sleep(500);
+        //Edit
+        driver.findElement(By.xpath("//a[@title='Edit']")).click();
+        Thread.sleep(500);
+        driver.findElement(By.xpath("//input[@id='name']")).clear();
+        driver.findElement(By.xpath("//input[@id='name']")).sendKeys("NguyenTuanHung");
+        driver.findElement(By.xpath("//button[@type='submit']")).click();
+        //Get message
+        Assert.assertEquals(driver.findElement(By.xpath("//span[@data-notify='message']")).getText(),"Category has been updated successfully");
+    }
+    @Test(priority = 3)
+    public void Delete_category() throws InterruptedException {
+        //Search Category
+        driver.findElement(By.xpath("//input[@id='search']")).sendKeys("NguyenTuanHung" + Keys.ENTER);
         Thread.sleep(500);
         //Delete
         driver.findElement(By.xpath("//a[@title='Delete']")).click();
